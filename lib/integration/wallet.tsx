@@ -10,13 +10,17 @@ import {
     WalletDisconnectButton,
     WalletMultiButton
 } from '@solana/wallet-adapter-react-ui';
-import { clusterApiUrl } from '@solana/web3.js';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 function WalletComponent({ children }: { children: React.ReactNode }) {
-    const network = WalletAdapterNetwork.Devnet;
-    const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+    const network = WalletAdapterNetwork.Mainnet;
+    const endpoint = process.env.NEXT_PUBLIC_RPC_URL;
+    
+    if (!endpoint) {
+        throw new Error('NEXT_PUBLIC_RPC_URL environment variable is not set');
+    }
+
     const wallets = useMemo(
         () => [
             new PhantomWalletAdapter(),
@@ -43,6 +47,6 @@ export const Wallet = dynamic(
     () => Promise.resolve(WalletComponent),
     { 
         ssr: false,
-        loading: () => <div>Loading</div>
+        loading: () => <div>Loading wallet...</div>
     }
 );
