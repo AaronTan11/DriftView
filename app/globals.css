@@ -43,73 +43,87 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Ghibli Light Theme */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem; /* Keeping radius */
+  --background: #f5f3e6; /* Main page background */
+  --foreground: #5c4f3d; /* Main text color */
+  --card: #f8f9fa; /* Card/Select background */
+  --card-foreground: #5c4f3d; /* Text on card */
+  --popover: #f8f9fa; /* Popover background */
+  --popover-foreground: #5c4f3d; /* Text on popover */
+  --primary: #6a994e; /* Main accent green */
+  --primary-foreground: #ffffff; /* Text on primary */
+  --secondary: #d8e2dc; /* Secondary background (headers, tabs) */
+  --secondary-foreground: #5c4f3d; /* Text on secondary */
+  --muted: #e8f1f2; /* Muted background (table header) */
+  --muted-foreground: #6d6875; /* Muted text */
+  --accent: #a7c4bc; /* Accent color (borders, active tabs) */
+  --accent-foreground: #5c4f3d; /* Text on accent */
+  --destructive: #e07a5f; /* Destructive color (negative pnl, short border) */
+  --destructive-foreground: #ffffff; /* Text on destructive */
+  --border: #a7c4bc; /* Main border color */
+  --input: #f8f9fa; /* Input background (matching card) */
+  --ring: #6a994e; /* Focus ring (matching primary) */
+
+  /* Chart colors - kept defaults for now, adjust if needed */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Sidebar specific colors */
+  --sidebar: #d8e2dc; /* Sidebar background */
+  --sidebar-foreground: #5c4f3d; /* Sidebar text */
+  --sidebar-primary: #6a994e; /* Sidebar primary accent */
+  --sidebar-primary-foreground: #ffffff; /* Text on sidebar primary */
+  --sidebar-accent: #a7c4bc; /* Sidebar accent (hover/active) */
+  --sidebar-accent-foreground: #5c4f3d; /* Text on sidebar accent */
+  --sidebar-border: #a7c4bc; /* Sidebar border */
+  --sidebar-ring: #6a994e; /* Sidebar focus ring */
+  --sidebar-muted-foreground: #6d6875; /* Muted text in sidebar nav */
 }
 
+/* Ghibli Dark Theme (Derived - adjust as needed) */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --background: #2c2821; /* Darker brown */
+  --foreground: #f5f3e6; /* Light beige */
+  --card: #3e3a34; /* Slightly lighter dark */
+  --card-foreground: #f5f3e6;
+  --popover: #3e3a34;
+  --popover-foreground: #f5f3e6;
+  --primary: #8bc34a; /* Lighter green */
+  --primary-foreground: #2c2821; /* Dark text on light green */
+  --secondary: #4a5e57; /* Darker teal/grey */
+  --secondary-foreground: #f5f3e6;
+  --muted: #40494b; /* Darker grey/blue */
+  --muted-foreground: #a8b1b1; /* Lighter grey */
+  --accent: #5d7a73; /* Darker teal/accent */
+  --accent-foreground: #f5f3e6;
+  --destructive: #ff9e80; /* Lighter red/orange */
+  --destructive-foreground: #2c2821; /* Dark text on light red */
+  --border: #5d7a73; /* Darker border */
+  --input: #3e3a34; /* Darker input bg */
+  --ring: #8bc34a; /* Lighter green ring */
+
+  /* Chart colors - kept defaults for now, adjust if needed */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+
+  /* Sidebar specific colors */
+  --sidebar: #3e3a34; /* Dark sidebar background */
+  --sidebar-foreground: #f5f3e6; /* Light sidebar text */
+  --sidebar-primary: #8bc34a; /* Lighter primary accent */
+  --sidebar-primary-foreground: #2c2821; /* Dark text on light primary */
+  --sidebar-accent: #5d7a73; /* Darker accent */
+  --sidebar-accent-foreground: #f5f3e6; /* Light text on dark accent */
+  --sidebar-border: #5d7a73; /* Darker border */
+  --sidebar-ring: #8bc34a; /* Lighter ring */
+  --sidebar-muted-foreground: #a8b1b1; /* Lighter muted text in sidebar */
 }
 
 @layer base {
@@ -118,10 +132,12 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23a7c4bc' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+    /* Removed the SVG background pattern, can be added back if desired */
+    /* background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23a7c4bc' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); */
   }
 }
 
+/* Keeping existing custom Ghibli classes for potential specific overrides */
 .ghibli-card {
   box-shadow: 0 8px 20px rgba(92, 79, 61, 0.1);
   transition: all 0.3s ease;
