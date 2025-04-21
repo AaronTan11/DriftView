@@ -1,19 +1,29 @@
 "use client"
 
+import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Cloud, ArrowUpCircle, ArrowDownCircle } from "lucide-react"
+import { DepositWithdrawDialog } from "@/components/deposit-withdraw-dialog"
 
-interface Balance {
+export interface Balance {
   token: string
   amount: string
   value: string
+  marketIndex?: number
 }
 
 interface BalancesTableProps {
   balances: Balance[]
 }
 
-export function BalancesTable({ balances }: BalancesTableProps) {
+export function BalancesTable({ balances }: BalancesTableProps) {  
+  const [dialogState, setDialogState] = useState<{
+    isOpen: boolean
+    type: 'deposit' | 'withdraw'
+    token: string
+    marketIndex: number
+  } | null>(null)
+
   if (balances.length === 0) {
     return <div className="text-center py-4 text-[#5c4f3d]">No balances found</div>
   }
@@ -44,11 +54,27 @@ export function BalancesTable({ balances }: BalancesTableProps) {
               <TableCell className="text-right text-[#5c4f3d]">{balance.value}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
-                  <button className="text-xs px-3 py-1 bg-[#d8e2dc] hover:bg-[#a7c4bc] rounded-full text-[#5c4f3d] border border-[#a7c4bc] flex items-center shadow-sm transition-colors">
+                  <button 
+                    onClick={() => setDialogState({
+                      isOpen: true,
+                      type: 'deposit',
+                      token: balance.token,
+                      marketIndex: balance.marketIndex ?? 0
+                    })}
+                    className="text-xs px-3 py-1 bg-[#d8e2dc] hover:bg-[#a7c4bc] rounded-full text-[#5c4f3d] border border-[#a7c4bc] flex items-center shadow-sm transition-colors"
+                  >
                     <ArrowDownCircle className="h-3 w-3 mr-1" />
                     Deposit
                   </button>
-                  <button className="text-xs px-3 py-1 bg-[#d8e2dc] hover:bg-[#a7c4bc] rounded-full text-[#5c4f3d] border border-[#a7c4bc] flex items-center shadow-sm transition-colors">
+                  <button 
+                    onClick={() => setDialogState({
+                      isOpen: true,
+                      type: 'withdraw',
+                      token: balance.token,
+                      marketIndex: balance.marketIndex ?? 0
+                    })}
+                    className="text-xs px-3 py-1 bg-[#d8e2dc] hover:bg-[#a7c4bc] rounded-full text-[#5c4f3d] border border-[#a7c4bc] flex items-center shadow-sm transition-colors"
+                  >
                     <ArrowUpCircle className="h-3 w-3 mr-1" />
                     Withdraw
                   </button>
@@ -58,6 +84,16 @@ export function BalancesTable({ balances }: BalancesTableProps) {
           ))}
         </TableBody>
       </Table>
+
+      {dialogState && (
+        <DepositWithdrawDialog
+          isOpen={dialogState.isOpen}
+          onClose={() => setDialogState(null)}
+          token={dialogState.token}
+          type={dialogState.type}
+          marketIndex={dialogState.marketIndex}
+        />
+      )}
     </div>
   )
 }

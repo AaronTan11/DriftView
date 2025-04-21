@@ -1,89 +1,113 @@
-import { create } from 'zustand';
-import { DriftClient, type DriftClientConfig } from '@drift-labs/sdk';
-import { Connection, PublicKey } from '@solana/web3.js';
-import type { WalletContextState } from '@solana/wallet-adapter-react';
+"use client"
+import { create } from "zustand"
+import {Connection} from "@solana/web3.js";
+import { DriftClient } from "@drift-labs/sdk";
+import { tryCatch } from "@/lib/try-catch";
 
 interface DriftStore {
+  // Client state
   driftClient: DriftClient | null;
+  connection: Connection | null;
   isInitialized: boolean;
-  isSubscribed: boolean;
+  isConnecting: boolean;
   error: Error | null;
-  initialize: (connection: Connection, wallet: WalletContextState) => Promise<void>;
-  disconnect: () => Promise<void>;
+  
+  // Subaccount state
+  activeSubaccountId: number;
+  subaccounts: Array<{
+    subaccountId: number;
+    name: string;
+    active: boolean;
+  }>;
+  
+  // Actions
+  initialize: (wallet: any) => Promise<void>;
+  disconnect: () => void;
+  switchSubaccount: (subaccountId: number) => Promise<void>;
+  fetchSubaccounts: () => Promise<void>;
+
 }
+
+
 
 export const useDriftStore = create<DriftStore>((set, get) => ({
   driftClient: null,
+  connection: null,
   isInitialized: false,
-  isSubscribed: false,
+  isConnecting: false,
   error: null,
+  activeSubaccountId: 0,
+  subaccounts: [],
 
-  initialize: async (connection: Connection, wallet: WalletContextState) => {
-    try {
-      // Check if wallet is properly connected
-      if (!wallet.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) {
-        throw new Error('Wallet not properly connected');
-      }
+  initialize: async (wallet: any) => {
+    set({isConnecting: true, error: null});
 
-      // Cleanup any existing client
-      const currentClient = get().driftClient;
-      if (currentClient) {
-        await currentClient.unsubscribe();
-      }
+    const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL!, 'confirmed');
+    const driftClient = new DriftClient({
+      connection,
+      wallet,
+      env: 'mainnet-beta',
+    });
 
-      // Create a browser-compatible wallet interface
-      const driftWallet = {
-        publicKey: wallet.publicKey,
-        signTransaction: wallet.signTransaction,
-        signAllTransactions: wallet.signAllTransactions,
-      };
-
-      // Create new DriftClient instance with explicit config
-      const newDriftClient = new DriftClient({
-        connection,
-        wallet: driftWallet,
-        env: 'devnet', // or 'mainnet-beta' based on your needs
-        opts: {
-          commitment: 'confirmed',
-          skipPreflight: true,
-        },
-      });
-
-      // Subscribe to updates
-      await newDriftClient.subscribe();
-
-      set({
-        driftClient: newDriftClient,
-        isInitialized: true,
-        isSubscribed: true,
-        error: null,
-      });
-    } catch (err) {
-      set({
-        error: err as Error,
-        isInitialized: false,
-        isSubscribed: false,
-      });
-      console.error('Failed to initialize DriftClient:', err);
+    const { data, error } = await tryCatch(driftClient.subscribe());
+    if (error) {
+      set({error: error, isConnecting: false});
+      return;
     }
+
+    set({
+      driftClient,
+      connection,
+      isInitialized: true,
+      isConnecting: false,
+    });
   },
 
-  disconnect: async () => {
-    try {
-      const currentClient = get().driftClient;
-      if (currentClient) {
-        await currentClient.unsubscribe();
+  disconnect: () => {
+    set({driftClient: null, connection: null, isInitialized: false});
+  },
+
+  switchSubaccount: async (subaccountId: number) => {
+    const driftClient = get().driftClient;
+    if (!driftClient) return;
+    const {data: isSwitched, error: switchError} = await tryCatch(driftClient.switchActiveUser(subaccountId));
+    if (switchError) {
+      set({error: switchError, isConnecting: false});
+      return;
+    }
+    set({activeSubaccountId: subaccountId});
+  },
+  fetchSubaccounts: async () => {
+    const driftClient = get().driftClient;
+    if (!driftClient) return;
+
+    const fetchSubaccountsLogic = async () => {
+      const nextSubaccountId = await driftClient.getNextSubAccountId();
+      const subaccounts = [];
+      
+      for (let i = 0; i < nextSubaccountId; i++) {
+        try {
+          const userAccount = driftClient.getUser(i);
+          if (userAccount && userAccount.getUserAccount()) {
+            subaccounts.push({
+              subaccountId: i,
+              name: String.fromCharCode(...userAccount.getUserAccount().name.filter(c => c !== 0)),
+              active: i === get().activeSubaccountId
+            });
+          }
+        } catch (error) {
+          continue; // Skip if this iteration of subaccount doesn't exist
+        }
       }
       
-      set({
-        driftClient: null,
-        isInitialized: false,
-        isSubscribed: false,
-        error: null,
-      });
-    } catch (err) {
-      set({ error: err as Error });
-      console.error('Failed to disconnect DriftClient:', err);
+      return subaccounts;
+    };
+    
+    const { data, error } = await tryCatch(fetchSubaccountsLogic());
+    if (error) {
+      set({error: error, isConnecting: false});
+      return;
     }
-  },
-})); 
+    set({subaccounts: data});
+  }
+}))
